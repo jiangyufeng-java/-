@@ -14,7 +14,7 @@ public class ShellSort {
 //        int[] arr = {8, 9, 1, 7, 2, 3, 5, 4, 6, 0};
 //        shellSort(arr);
 
-        int arr[] = new int[80000];
+        int arr[] = new int[8000000];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = (int) (Math.random() * arr.length);
         }
