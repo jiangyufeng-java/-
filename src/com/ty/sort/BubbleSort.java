@@ -8,7 +8,7 @@ import java.util.Arrays;
  * author : jyf
  * date : 2020-08-03 14:20
  **/
-public class BubbleSort {
+public class  BubbleSort {
 
     public static void main(String[] args) {
 //        int arr[] = {3, 9, -1, 10, -2};

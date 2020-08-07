@@ -13,7 +13,7 @@ public class MergeSort {
 
     public static void main(String[] args) {
 //        int arr[] = {8, 4, 5, 7, 1, 3, 6, 2};
-        int arr[] = new int[800000];
+        int arr[] = new int[80000000];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = (int) (Math.random() * 80000);
         }
