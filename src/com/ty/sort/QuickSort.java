@@ -14,7 +14,7 @@ public class QuickSort {
 //        int[] arr = {-9, 78, 0, 23, -567, 70};
 //        int[] arr = {0,1,0,0,1,1};
 
-        int arr[] = new int[8];
+        int arr[] = new int[800000];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = (int) (Math.random() * 80000);
         }
@@ -22,7 +22,6 @@ public class QuickSort {
         quickSort(arr, 0, arr.length - 1); // 位移法-> 786 0.8S  800W 数据
         long end = System.currentTimeMillis();
         System.out.println(end - start);
-        System.out.println(Arrays.toString(arr));
     }
 
     /**
