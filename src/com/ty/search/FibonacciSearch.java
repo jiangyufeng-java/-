@@ -14,6 +14,11 @@ public class FibonacciSearch {
     public static int maxSize = 20;
 
     public static void main(String[] args) {
+//        System.out.println(Arrays.toString(fib()));
+        int[] arr = {1,8, 10, 89, 1000, 1234};
+        int index = fibonacciSearch(arr, 1000);
+        System.out.println(index);
+
     }
 
     /**
@@ -33,19 +38,20 @@ public class FibonacciSearch {
     }
 
     /**
+     * 斐波那契查找法
      *
-     * @param arr
-     * @param value
+     * @param arr   数组
+     * @param value 需要找的值
      * @return
      */
-    public static int fibonacciSearch(int[] arr, int value){
+    public static int fibonacciSearch(int[] arr, int value) {
         int[] fib = fib(); // 斐波那契数列
         int fibIndex = 0;  // 斐波那契的下标
         int left = 0;  // 左下标
-        int right = arr.length -1 ;  // 右下标
+        int right = arr.length - 1;  // 右下标
 
         // 因为right使用的是索引, 从0开始. 所以fib[fibIndex] - 1 把元素个数变成索引
-        while (right > fib[fibIndex] - 1 ){
+        while (right > fib[fibIndex] - 1) {
             fibIndex++;
         }
         // 遍历完之后就获得了一个斐波那契数列的数号
@@ -55,10 +61,32 @@ public class FibonacciSearch {
             fibs[i] = arr[right];
         }
 
-        // 黄金分割点
-        int mid = left + fibs[right-1]-1;
         // 接下来可以进行比较了
-        while (left < right){
+        while (left <= right) {
+            // 黄金分割点的索引位置
+            // 因为这里是左边+上斐波那契数列的黄金分割点  也就是开始位置, 加上当前斐波那契数列的点
+            int mid = left + fib[fibIndex - 1] - 1;
+            if (value > fibs[mid]) {
+                left = mid + 1;
+                // 说明这个数比mid大,那我们需要往右边去找
+                fibIndex -= 2;
+            }else if (value < fibs[mid]){
+                // 因为是往左边去找
+                // 修改左边的最大值
+                right = mid - 1;
+                // 这里-- 是因为 fibs[fibIndex] = fibs[fibIndex - 1] + fibs[fibIndex - 2]
+                // 因为是小于所以是在左边, 也就是大的那边
+                fibIndex --;
+            }else {
+                // 说明找到了
+                // 确认需要返回的下标
+                if (mid <= right){
+                    return mid;
+                }else {
+                    return right;
+                }
+
+            }
         }
         return -1;
     }
