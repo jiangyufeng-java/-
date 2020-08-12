@@ -15,12 +15,14 @@ public class BinaryTreeDemo {
         HeroNode node3 = new HeroNode(3, "卢俊义");
         HeroNode node4 = new HeroNode(4, "林冲");
         HeroNode node5 = new HeroNode(5, "关胜");
+        HeroNode node6 = new HeroNode(6, "小蒋");
         BinaryTree binaryTree = new BinaryTree();
         binaryTree.setRoot(node1);
         node1.setLeft(node2);
         node1.setRight(node3);
         node3.setRight(node4);
         node3.setLeft(node5);
+        node2.setLeft(node6);
 
  /*       System.out.println("前序遍历");
         binaryTree.preOrder();
@@ -50,14 +52,22 @@ public class BinaryTreeDemo {
 //            System.out.println(no+"号英雄为" + heroNode);
 //        }
 
-        System.out.println("后序查找~~~~");
-        int no = 15;
-        HeroNode heroNode = binaryTree.postSearch(no);
-        if (heroNode == null){
-            System.out.println("没有"+no+"号英雄");
-        }else{
-            System.out.println(no+"号英雄为" + heroNode);
-        }
+//        System.out.println("后序查找~~~~");
+//        int no = 15;
+//        HeroNode heroNode = binaryTree.postSearch(no);
+//        if (heroNode == null){
+//            System.out.println("没有"+no+"号英雄");
+//        }else{
+//            System.out.println(no+"号英雄为" + heroNode);
+//        }
+
+        // 删除5号和3号节点
+        System.out.println("前序遍历");
+        binaryTree.preOrder();
+        binaryTree.deleteNode(6);
+        System.out.println("删除后遍历");
+        binaryTree.preOrder();
+
 
     }
 }
@@ -126,6 +136,20 @@ class BinaryTree{
             return root.postSearch(no);
         }
     }
+
+    // 删除节点
+    public void deleteNode(int no){
+        // 首先我们需要对root进行非空校验
+        if (root != null){
+            if (root.getNo() == no){
+                root = null;
+                return;
+            }
+            root.deleteNode(no);
+        }else{
+            System.out.println("当前树为空");
+        }
+    }
 }
 
 
@@ -135,6 +159,14 @@ class HeroNode{
     private String name;  // 名字
     private HeroNode left; // 左节点
     private HeroNode right;// 右节点
+
+    public int getNo() {
+        return no;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public void setLeft(HeroNode left) {
         this.left = left;
@@ -187,6 +219,35 @@ class HeroNode{
         if (this.right != null) this.right.postOrder();
         // 输出当前
         System.out.println(this);
+    }
+    // 删除某个节点
+    public void deleteNode(int no){
+        // 删除节点我们使用前序查找的方式来删除, 删除我们需要判断下一个节点是否等于no
+        //  因为我们无法删除我们本身这个节点,只能通过上一个节点来删除我们这个节点
+        // 1. 我们首先判断当前节点的下两个节点是否 等于no 如果等于,那我们直接删除即可,
+        // 2. 如果不等于,那我们对下一个节点进行递归删除
+        if (this.left != null && this.left.no == no ){
+            // 表示找到了改节点, 那我们直接删除即可
+            this.left = null;
+            return;
+        }
+
+        // 判断右节点是否等于
+        if (this.right != null && this.right.no == no ){
+            // 表示找到了改节点, 那我们直接删除即可
+            this.right = null;
+            return;
+        }
+
+        // 都不是进行递归调用
+        if (this.left != null){
+            // 不为空才进行调用
+            this.left.deleteNode(no);
+        }
+
+        if (this.right!= null){
+            this.right.deleteNode(no);
+        }
     }
 
     // 前序查找
