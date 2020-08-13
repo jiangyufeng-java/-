@@ -1,82 +1,50 @@
-package com.ty.tree;
+package com.ty.tree.threadedbinarytree;
+
 
 /**
  * program : OneCode
- * description : 二叉树
+ * description : 线索二叉树
  * author : jyf
- * date : 2020-08-12 11:43
+ * date : 2020-08-13 11:44
  **/
-public class BinaryTreeDemo {
+public class ThreadedBinaryTreeDemo {
 
     public static void main(String[] args) {
-        // 创建多个节点
-        HeroNode node1 = new HeroNode(1, "宋江");
-        HeroNode node2 = new HeroNode(2, "吴用");
-        HeroNode node3 = new HeroNode(3, "卢俊义");
-        HeroNode node4 = new HeroNode(4, "林冲");
-        HeroNode node5 = new HeroNode(5, "关胜");
-        HeroNode node6 = new HeroNode(6, "小蒋");
-        BinaryTree binaryTree = new BinaryTree();
-        binaryTree.setRoot(node1);
-        node1.setLeft(node2);
-        node1.setRight(node3);
-        node3.setRight(node4);
-        node3.setLeft(node5);
-        node2.setLeft(node6);
+        //测试一把中序线索二叉树的功能
+        HeroNode root = new HeroNode(1, "tom");
+        HeroNode node2 = new HeroNode(3, "jack");
+        HeroNode node3 = new HeroNode(6, "smith");
+        HeroNode node4 = new HeroNode(8, "mary");
+        HeroNode node5 = new HeroNode(10, "king");
+        HeroNode node6 = new HeroNode(14, "dim");
 
- /*       System.out.println("前序遍历");
-        binaryTree.preOrder();
+        //二叉树，后面我们要递归创建, 现在简单处理使用手动创建
+        root.setLeft(node2);
+        root.setRight(node3);
+        node2.setLeft(node4);
+        node2.setRight(node5);
+        node3.setLeft(node6);
 
-        System.out.println("中序遍历");
-        binaryTree.infixOrder();
+        ThreadedBinaryTree threadedBinaryTree = new ThreadedBinaryTree();
+        threadedBinaryTree.setRoot(root);
+        threadedBinaryTree.threadedNodes();
+        int no = 6;
+        System.out.println(no+"节点的上一个节点是"+node3.getLeft());
+        System.out.println(no+"节点的下一个节点是"+node3.getRight());
 
-        System.out.println("后序遍历");
-        binaryTree.postOrder();*/
-
-        // 前序查找
-//        System.out.println("前序查找~~~~");
-//        int no = 5;
-//        HeroNode heroNode = binaryTree.preSearch(no); // 4
-//        if (heroNode == null){
-//            System.out.println("没有"+no+"号英雄");
-//        }else{
-//            System.out.println(no+"号英雄为" + heroNode);
-//        }
-
-//        System.out.println("中序查找~~~~");
-//        int no = 15;
-//        HeroNode heroNode = binaryTree.infixSearch(no);  // 3
-//        if (heroNode == null){
-//            System.out.println("没有"+no+"号英雄");
-//        }else{
-//            System.out.println(no+"号英雄为" + heroNode);
-//        }
-
-//        System.out.println("后序查找~~~~");
-//        int no = 15;
-//        HeroNode heroNode = binaryTree.postSearch(no);
-//        if (heroNode == null){
-//            System.out.println("没有"+no+"号英雄");
-//        }else{
-//            System.out.println(no+"号英雄为" + heroNode);
-//        }
-
-        // 删除5号和3号节点
-        System.out.println("前序遍历");
-        binaryTree.preOrder();
-        binaryTree.deleteNode(6);
-        System.out.println("删除后遍历");
-        binaryTree.preOrder();
-
-
+        // 中序遍历输出我们的线索数
+        threadedBinaryTree.preThreaded();
     }
 }
 
-
 // 表示树
-class BinaryTree{
+class ThreadedBinaryTree{
 
     private HeroNode root; // 表示跟节点
+
+    // 还需要一个额外的节点记录上一个节点
+    private HeroNode pre = null; // 默认为null
+
     public void setRoot(HeroNode root) {
         this.root = root;
     }
@@ -114,7 +82,7 @@ class BinaryTree{
             System.out.println("当前节点为空");
             return null;
         }else{
-           return root.preSearch(no);
+            return root.preSearch(no);
         }
     }
 
@@ -150,6 +118,63 @@ class BinaryTree{
             System.out.println("当前树为空");
         }
     }
+
+    // 中序遍历线索化节点
+    public void preThreaded(){
+        // 首先中序遍历我们还是需要一直找到最左边的节点
+        HeroNode node = root;
+
+        while (node != null){
+            // 因为现在是线索了, 所以我们第一个找到的肯定是leftType为1的数
+            while (node.getLeftType() == 0){
+                node = node.getLeft();
+            }
+            // 上面遍历完了, 就已经到了第一个最左边的叶子节点
+            System.out.println(node);
+            // 因为线索化了, 所以我们直接可以输出他的right的节点
+            while (node.getRightType() == 1){
+                node = node.getRight();
+                System.out.println(node);
+            }
+            // 没有线索的话,那说明有叶子结点
+            node= node.getRight();
+        }
+    }
+
+    // 线索化节点. 中序线索 我们需要在树这个类中完成
+    public void threadedPreNodes(HeroNode node) {
+        // 首先我们需要确定, 我们是中序线索化,
+        // 线索化其实就是把每一次的跳转,进行连起来
+        // 首先需要判断root节点是否为空
+        if (node == null ){
+            return;
+        }
+
+        // 我们中序需要先判断左边是否有节点
+         threadedPreNodes(node.getLeft());
+        // 到这里表示已经没有右子节点了
+        if (node.getLeft() == null){
+            // 说明这是一个叶子结点
+            node.setLeft(pre); // 指向上一个节点
+            node.setLeftType(1); // 设置类型
+        }
+
+        if (pre!=null && pre.getRight() == null){
+            // 说明上一个节点的right还没有指向是一个叶子节点, 我们需要把它指向当前节点
+            pre.setRight(node);
+            pre.setRightType(1);
+        }
+        // 最后把pre 变成当前节点去下一个操作
+        pre = node;
+
+
+        // 右子节点的递归
+        threadedPreNodes(node.getRight());
+    }
+
+    public void threadedNodes() {
+        this.threadedPreNodes(root);
+    }
 }
 
 
@@ -160,12 +185,42 @@ class HeroNode{
     private HeroNode left; // 左节点
     private HeroNode right;// 右节点
 
+    // 需要两个额外的属性, 来表示当前节点的属性是叶子节点还是非叶子节点
+    private int leftType = 0; // 0表示指向左子树  1表示指向前去节点
+    private int rightType = 0; // 表示右节点的属性
+
+
+
+    public int getLeftType() {
+        return leftType;
+    }
+
+    public void setLeftType(int leftType) {
+        this.leftType = leftType;
+    }
+
+    public int getRightType() {
+        return rightType;
+    }
+
+    public void setRightType(int rightType) {
+        this.rightType = rightType;
+    }
+
     public int getNo() {
         return no;
     }
 
     public String getName() {
         return name;
+    }
+
+    public HeroNode getLeft() {
+        return left;
+    }
+
+    public HeroNode getRight() {
+        return right;
     }
 
     public void setLeft(HeroNode left) {
@@ -328,4 +383,5 @@ class HeroNode{
         }
         return null;
     }
+
 }
