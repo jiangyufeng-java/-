@@ -17,6 +17,7 @@ public class ThreadedBinaryTreeDemo {
         HeroNode node4 = new HeroNode(8, "mary");
         HeroNode node5 = new HeroNode(10, "king");
         HeroNode node6 = new HeroNode(14, "dim");
+        HeroNode node7 = new HeroNode(15, "kim");
 
         //二叉树，后面我们要递归创建, 现在简单处理使用手动创建
         root.setLeft(node2);
@@ -24,6 +25,8 @@ public class ThreadedBinaryTreeDemo {
         node2.setLeft(node4);
         node2.setRight(node5);
         node3.setLeft(node6);
+
+        node3.setRight(node7);
 
         // 手动设置父节点,为了给后续遍历用
         node2.setParent(root);
@@ -34,6 +37,7 @@ public class ThreadedBinaryTreeDemo {
 
         ThreadedBinaryTree threadedBinaryTree = new ThreadedBinaryTree();
         threadedBinaryTree.setRoot(root);
+//        threadedBinaryTree.threadedInfixNodes();
 //        threadedBinaryTree.threadedPreNodes(root);
          threadedBinaryTree.threadedPostNodes(root);
         int no = 10;
@@ -41,6 +45,7 @@ public class ThreadedBinaryTreeDemo {
         System.out.println(no + "节点的下一个节点是" + node3.getRight());
 
         // 中序遍历输出我们的线索数
+//        threadedBinaryTree.infixThreaded();
 
         // 前序遍历输出我们的线索
 //        threadedBinaryTree.preThreaded();
@@ -232,19 +237,26 @@ class ThreadedBinaryTree {
     }
 
     // 遍历前序线索化节点
+    // 1 3 8 10 6 14
     public void preThreaded() {
         HeroNode node = root;
         if (node == null)  return;
-        while (node.getLeftType() == 0) {
-            System.out.println(node);
-            node = node.getLeft();
-        }
-
-        while (node.getRightType() == 1) {
-            // 说明这个线索的节点的下一个是需要去找的点
-            node = node.getRight();
-            System.out.println(node);
-        }
+       while (node != null){
+           if (node.getLeftType() == 0){
+               System.out.println(node);
+               pre = node;
+               node = node.getLeft();
+           }else if (node.getRightType() == 1){
+               System.out.println(node);
+               pre = node;
+               node = node.getRight();
+           }else{
+               if (node.getLeft() == pre){
+                   System.out.println(node);
+                   return;
+               }
+           }
+       }
 
 
     }
@@ -303,7 +315,7 @@ class ThreadedBinaryTree {
         threadedInfixNodes(node.getRight());
     }
 
-    public void threadedNodes() {
+    public void threadedInfixNodes() {
         this.threadedInfixNodes(root);
     }
 }
