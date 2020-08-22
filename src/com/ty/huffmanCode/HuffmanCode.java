@@ -1,5 +1,6 @@
 package com.ty.huffmanCode;
 
+
 import java.util.*;
 
 /**
@@ -27,7 +28,86 @@ public class HuffmanCode {
         // 随后转成字符串 然后转成字节数组
         byte[] huffmanByte = zip(str.getBytes());
         System.out.println(Arrays.toString(huffmanByte));
-        System.out.println(sb.toString());
+
+        byte[] decode = decode(codes, huffmanByte);
+        System.out.println(new String(decode));
+    }
+
+    static StringBuilder sb = new StringBuilder();
+    static Map<Byte, String> codes = new HashMap<>();
+
+    /**
+     * 把我们的字节通过哈夫曼编码表反转成我们的字符串
+     *
+     * @param b    字节
+     * @param flag 是否是最后一个字符串,  不是的话我们需要补高位
+     * @return
+     */
+    private static String byteToBitString(byte b, boolean flag) {
+        // 我们发现只有int里面有方法解码所以我们吧b转成int
+        int intByte = b;
+        if (!flag) {
+            // 这里是如果不是最后一位,我们需要补高位
+            intByte |= 256;
+        }
+        // 转成二进制
+        String s = Integer.toBinaryString(intByte);
+
+        // 判断是否是最后一位
+        if (flag) {
+            // 说明直接返回即可  是最后一位
+            return s;
+        }
+        // 需要补码的则需要截取后8位
+        return s.substring(s.length() - 8);
+
+    }
+
+    /**
+     * 解码成原字节数组
+     *
+     * @return
+     */
+    private static byte[] decode(Map<Byte, String> codes, byte[] huffmanByte) {
+        // 1. 首先我们需要把这个字节数组, 根据我们的哈夫曼编码转成对应的字符串
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < huffmanByte.length; i++) {
+            byte b = huffmanByte[i];
+            // 判断是否是最后一个元素
+            boolean flag = i == huffmanByte.length - 1;
+            stringBuilder.append(byteToBitString(b, flag));
+        }
+        // 我们接下来需要根据字符串去匹配对应的哈夫曼编码表里面的数, 也就是string 为 key  byte 为value
+        Map<String, Byte> decodeMap =  new HashMap<>();
+        for (Map.Entry<Byte, String> entry : codes.entrySet()) {
+            decodeMap.put(entry.getValue(), entry.getKey());
+        }
+        // 这一步已经完成了字符串的拼接了, 接下来就是把元素一个个匹配出来
+        List<Byte> byteList = new ArrayList<>();
+        for (int i = 0; i < stringBuilder.length(); ) {
+            int count = 1;
+            String substring;
+            Byte b;
+            while (true) {
+                // 先截取出一段字符串,然后去比较
+                 substring = stringBuilder.substring(i, i + count);
+                 b = decodeMap.get(substring);
+                if (b == null){
+                    count++;
+                }else{
+                    // 如果有这个数那我们需要存起来
+                    byteList.add(b);
+                    i+=count;
+                    break;
+                }
+            }
+        }
+        // 到这里我们list已经存放好了所有的数据.
+        byte[] bytes = new byte[byteList.size()];
+        for (int i = 0; i < byteList.size(); i++) {
+            bytes[i] = byteList.get(i);
+        }
+        return bytes;
     }
 
     private static byte[] zip(byte[] bytes) {
@@ -54,9 +134,6 @@ public class HuffmanCode {
         return huffman;
     }
 
-
-    static StringBuilder sb = new StringBuilder();
-    static Map<Byte, String> codes = new HashMap<>();
 
     /**
      * 把传入的赫夫曼树节点, 放入集合中
