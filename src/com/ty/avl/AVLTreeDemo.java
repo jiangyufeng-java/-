@@ -1,39 +1,31 @@
-package com.ty.binarySortTree;
-
+package com.ty.avl;
 
 /**
  * program : OneCode
- * description : 顺序二叉树
+ * description : 平衡二叉树
  * author : jyf
- * date : 2020-08-26 17:43
+ * date : 2020-08-28 14:23
  **/
-public class BinarySortTree {
+public class AVLTreeDemo {
 
     public static void main(String[] args) {
-        int[] arr = {7, 3, 10, 12, 5, 1, 9, 2};
-        BinaryTree binaryTree = new BinaryTree();
+        //  int[] arr = {4,3,6,5,7,8};
+        //  int[] arr =  {10,12, 8, 9, 7, 6};
+        int[] arr = {10, 11, 7, 6, 8, 9, 100, 200, 23, 26, 298, -10};
+        AVLTree avlTree = new AVLTree();
         for (int i : arr) {
-            binaryTree.add(new Node(i));
+            avlTree.add(new Node(i));
         }
-        binaryTree.infixOrder();
 
-        System.out.println("删除后~~~~");
-//        binaryTree.deleteNode(1);
-//        binaryTree.deleteNode(1);
-        binaryTree.delNode(2);
-        binaryTree.delNode(5);
-        binaryTree.delNode(9);
-        binaryTree.delNode(12);
-        binaryTree.delNode(7);
-        binaryTree.delNode(3);
-        binaryTree.delNode(10);
-        binaryTree.delNode(1);
-        binaryTree.infixOrder();
-
+        System.out.println("avl树的高度" + avlTree.root.height());
+        System.out.println("avl树左子节点的高度" + avlTree.root.leftHeight());
+        System.out.println("avl树右子节点的高度" + avlTree.root.rightHeight());
+//        System.out.println(avlTree.root);
+        avlTree.infixOrder();
     }
 }
 
-class BinaryTree {
+class AVLTree {
     Node root;
 
     // 删除节点
@@ -117,6 +109,13 @@ class BinaryTree {
         }
     }
 
+
+    /**
+     * 查找当前节点父节点
+     *
+     * @param value 当前节点的value
+     * @return 父节点
+     */
     private Node searchParent(int value) {
         if (root == null) {
             return null;
@@ -189,6 +188,78 @@ class Node {
     int value;
     Node left;
     Node right;
+
+    /**
+     * 左旋的方法
+     */
+    private void leftRotate() {
+        // 创建一个新的当前节点
+        Node newNode = new Node(value);
+        // 把新节点的左节点指向当前节点的左节点
+        newNode.left = left;
+        // 把新节点的右节点指向 当前节点右节点的左节点
+        newNode.right = right.left;
+        // 随后把当前节点替换成当前节点的右节点的
+        this.value = right.value;
+        // 然后把当前节点的左子节点, 指向新节点
+        left = newNode;
+        // 右子节点指向 原右子节点的右子节点
+        right = right.right;
+    }
+
+    /**
+     * 右旋的方法
+     */
+    private void rightRotate() {
+        // 创建一个新的当前节点
+        Node newNode = new Node(value);
+        // 把新节点的右节点指向当前节点的右节点
+        newNode.right = right;
+        // 把新节点的左节点指向 当前节点左节点的右节点
+        newNode.left = left.right;
+        // 随后把当前节点替换成当前节点的左节点的的值
+        this.value = left.value;
+        // 然后把当前节点的右子节点, 指向新节点
+        right = newNode;
+        // 左子节点指向 原左子节点的左子节点
+        left = left.left;
+    }
+
+    /**
+     * 获取当前树的高度
+     *
+     * @return 返回高度
+     */
+    public int height() {
+        // 这里的意思就是, 分别去求 左右两个子树的高度, +1 是精髓所在!! 返回的最后是当前这棵树的高度
+        return Math.max((this.left == null ? 0 : this.left.height()), (this.right == null ? 0 : this.right.height())) + 1;
+    }
+
+    /**
+     * 返回左子树的高度
+     *
+     * @return
+     */
+    public int leftHeight() {
+        if (left != null) {
+            return left.height();
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * 返回右子树的高度
+     *
+     * @return
+     */
+    public int rightHeight() {
+        if (right != null) {
+            return right.height();
+        } else {
+            return 0;
+        }
+    }
 
     /**
      * 寻找节点
@@ -268,6 +339,34 @@ class Node {
                 this.right = node;
             } else {
                 this.right.add(node);
+            }
+        }
+
+        // 需要判断树是否是平衡二叉树
+        if (rightHeight() - leftHeight() > 1) {
+            // 说明需要左旋
+            // 在左旋之前, 需要判断一下. 右子树的左子树是否大于右子树的右子树
+            if (right != null && right.leftHeight() > right.rightHeight()) {
+                // 这里需要先把右子树右旋, 然后在左旋
+                right.rightHeight();
+                // 随后左旋
+                leftRotate();
+            } else {
+                leftRotate();
+            }
+            return;
+        }
+
+        if (leftHeight() - rightHeight() > 1) {
+            // 说明需要右旋
+            // 在右旋之前, 需要判断一下. 左子树的右子树是否大于左子树的左子树
+            if (left != null && left.rightHeight() > left.leftHeight()) {
+                // 这里需要先把左子树左旋, 然后在右旋
+                left.leftRotate();
+                // 随后右旋
+                rightRotate();
+            } else {
+                rightRotate();
             }
         }
     }
