@@ -13,6 +13,7 @@ public class AVLTreeDemo {
         //  int[] arr =  {10,12, 8, 9, 7, 6};
         int[] arr = {10, 11, 7, 6, 8, 9, 100, 200, 23, 26, 298, -10};
         AVLTree avlTree = new AVLTree();
+        System.out.println();
         for (int i : arr) {
             avlTree.add(new Node(i));
         }
