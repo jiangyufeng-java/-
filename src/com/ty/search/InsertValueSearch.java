@@ -3,7 +3,7 @@ package com.ty.search;
 import java.util.Arrays;
 
 /**
- * program : OneCode
+ * program : DataStructures
  * description : 插值查找法
  * author : jyf
  * date : 2020-08-10 10:57

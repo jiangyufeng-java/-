@@ -1,7 +1,7 @@
 package com.ty.tree;
 
 /**
- * program : OneCode
+ * program : DataStructures
  * description : 顺序二叉树
  * author : jyf
  * date : 2020-08-13 09:39

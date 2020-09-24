@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * program : OneCode
+ * program : DataStructures
  * description : 赫夫曼编码压缩
  * author : jyf
  * date : 2020-08-21 14:27

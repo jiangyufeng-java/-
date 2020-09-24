@@ -3,7 +3,7 @@ package com.ty.hashtab;
 import java.util.Scanner;
 
 /**
- * program : OneCode
+ * program : DataStructures
  * description : 用哈希做缓存
  * author : jyf
  * date : 2020-08-11 14:15

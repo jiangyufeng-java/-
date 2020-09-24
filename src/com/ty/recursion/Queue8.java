@@ -3,7 +3,7 @@ package com.ty.recursion;
 import java.util.Arrays;
 
 /**
- * program : OneCode
+ * program : DataStructures
  * description : 8皇后算法
  * author : jyf
  * date : 2020-07-30 15:05

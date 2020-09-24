@@ -1,7 +1,7 @@
 package com.ty.recursion;
 
 /**
- * program : OneCode
+ * program : DataStructures
  * description : 模拟迷宫问题
  * author : jyf
  * date : 2020-07-29 13:56

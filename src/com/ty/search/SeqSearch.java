@@ -1,7 +1,7 @@
 package com.ty.search;
 
 /**
- * program : OneCode
+ * program : DataStructures
  * description : 线性查找
  * author : jyf
  * date : 2020-08-08 14:57

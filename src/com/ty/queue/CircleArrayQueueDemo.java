@@ -3,7 +3,7 @@ package com.ty.queue;
 import java.util.Scanner;
 
 /**
- * program : OneCode
+ * program : DataStructures
  * description :
  * author : jyf
  * date : 2020-06-27 15:21

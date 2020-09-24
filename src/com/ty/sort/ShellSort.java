@@ -3,7 +3,7 @@ package com.ty.sort;
 import java.util.Arrays;
 
 /**
- * program : OneCode
+ * program : DataStructures
  * description : 希尔排序
  * author : jyf
  * date : 2020-08-04 11:40

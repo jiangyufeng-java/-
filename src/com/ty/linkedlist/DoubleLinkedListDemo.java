@@ -1,7 +1,7 @@
 package com.ty.linkedlist;
 
 /**
- * program : OneCode
+ * program : DataStructures
  * description :
  * author : jyf
  * date : 2020-07-03 14:50

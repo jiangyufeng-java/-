@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * program : OneCode
+ * program : DataStructures
  * description : 链表实现栈
  * author : jyf
  * date : 2020-07-21 10:39

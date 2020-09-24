@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
- * program : OneCode
+ * program : DataStructures
  * description : 图类型的数据结构
  * author : jyf
  * date : 2020-08-31 15:38
@@ -18,25 +18,35 @@ public class Graph {
     boolean[] isVisited;
 
     public static void main(String[] args) {
-        String vertexS[] = {"A", "B", "C", "D", "E"};
-
+//        String vertexS[] = {"A", "B", "C", "D", "E"};
+        String vertexS[] = {"1", "2", "3", "4", "5" ,"6","7","8"};
         Graph graph = new Graph(vertexS.length);
         for (String vertex : vertexS) {
             graph.insertVertex(vertex);
         }
 
         // 添加里面的节点
+//        graph.insertEdge(0, 1, 1);
+//        graph.insertEdge(0, 2, 1);
+//        graph.insertEdge(1, 2, 1);
+//        graph.insertEdge(1, 3, 1);
+//        graph.insertEdge(1, 4, 1);
+
         graph.insertEdge(0, 1, 1);
         graph.insertEdge(0, 2, 1);
-        graph.insertEdge(1, 2, 1);
         graph.insertEdge(1, 3, 1);
         graph.insertEdge(1, 4, 1);
+        graph.insertEdge(3, 7, 1);
+        graph.insertEdge(4, 7, 1);
+        graph.insertEdge(2, 5, 1);
+        graph.insertEdge(2, 6, 1);
+        graph.insertEdge(5, 6, 1);
 
         // 显示效果
 //        graph.showEdges();
         // 显示边
         System.out.println(graph.numOfEdges);
-        graph.bfs();
+        graph.dfs();
 
     }
 

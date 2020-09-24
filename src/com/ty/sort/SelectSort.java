@@ -4,7 +4,7 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
- * program : OneCode
+ * program : DataStructures
  * description : 选择排序
  * author : jyf
  * date : 2020-08-03 17:04

@@ -2,7 +2,7 @@ package com.ty.tree.threadedbinarytree;
 
 
 /**
- * program : OneCode
+ * program : DataStructures
  * description : 线索二叉树
  * author : jyf
  * date : 2020-08-13 11:44
